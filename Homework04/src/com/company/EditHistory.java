@@ -6,9 +6,11 @@ import java.util.Scanner;
 public class EditHistory {
 
     private static SizedStack<String> editHistoryStack = new SizedStack<>(10);
+    private static SizedStack<String> storageStack = new SizedStack<>(10);
 
     public EditHistory() {
         editHistoryStack = new SizedStack<>(10);
+        storageStack = new SizedStack<>(10);
     }
 
     public static void startEditHistory(Scanner scanner) {
@@ -56,7 +58,7 @@ public class EditHistory {
         String delete = input.toLowerCase();
         if (delete.equals("d")) {
             try {
-                editHistoryStack.pop();
+                System.out.println("Deleted: " + storageStack.push(editHistoryStack.pop()));
             } catch (EmptyStackException e) {
                 System.out.println("Nothing to delete from your Edit History.");
             }
@@ -66,7 +68,11 @@ public class EditHistory {
     public static void undoInput(String input) {
         String undo = input.toLowerCase();
         if (undo.equals("u")) {
-            editHistoryStack.push(editHistoryStack.pop());
+            try {
+                System.out.println("Undone: " + editHistoryStack.push(storageStack.pop()));
+            } catch (EmptyStackException e) {
+                System.out.println("Nothing to undo.");
+            }
         }
     }
 }
